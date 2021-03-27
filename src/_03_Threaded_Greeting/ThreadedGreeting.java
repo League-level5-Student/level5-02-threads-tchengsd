@@ -20,20 +20,37 @@ public class ThreadedGreeting {
 	
 	//1. Create a new class called ThreadedGreeter that implements the Runnable interface.
 	//   Be sure to implement the run() method.
-	
+	class ThreadedGreeter implements Runnable {
 	//2. Give the ThreadedGreeter class a  member variable of the integer type and a constructor
 	//   to initialize the member variable to a custom value.
-	
+		int num;
+		ThreadedGreeter(int inputNum) {
+			num = inputNum;
+		}
 	//3. In the run method of the ThreadedGreeter class, print the message using the member variable as the thread number.
 	//   If the member integer is less than or equal to 50, create a new thread. 
 	//   Pass in a new object of the ThreadedGreeter class with the value of the member variable plus one.
-	
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			System.out.println("Hello from thread number: " + num);
+			if(num <= 50) {
+				Thread t = new Thread(new ThreadedGreeter(num + 1));
 	//4. Start the thread and join it with the calling thread.
+				t.start();
+				try {
+					t.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	
+	}	
 	public static void main(String[] args) {
 		//5. Create the first thread and initialize it with an object of the ThreadedGreeter class.
 		//   The ThreadedGreeter object should be initialized with 1.
-		Thread t = new Thread(new ThreadedGreeter(1));
+		Thread t = new Thread(new ThreadedGreeting().new ThreadedGreeter(1));
 		
 		//6. Start and join the thread. Did you get the required output?
 		t.start();
